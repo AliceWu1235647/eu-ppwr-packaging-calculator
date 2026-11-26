@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EU PPWR Packaging Empty-Space (&le;50%), Recyclability Grade &amp; GSM-to-PT Calculator</title>
+  <meta name="description" content="Free browser-based structural packaging calculator for EU PPWR Regulation (EU) 2025/40: check Article 24 <=50% empty-space ratio, Article 6 Grade A/B/C recyclability mass share, and paperboard GSM-to-PT caliper." />
+  <link rel="canonical" href="https://alicewu1235647.github.io/eu-ppwr-packaging-calculator/" />
+  <meta name="robots" content="index, follow" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "EU PPWR Empty-Space, Recyclability Grade & Paperboard Caliper Calculator",
+    "applicationCategory": "EngineeringApplication",
+    "operatingSystem": "Web",
+    "url": "https://alicewu1235647.github.io/eu-ppwr-packaging-calculator/",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": {
+      "@type": "Organization",
+      "name": "BestPackFactory Structural Packaging Engineering",
+      "url": "https://www.bestpackfactory.com/"
+    }
+  }
+  </script>
+  <style>
+    :root { --navy: #0f2744; --green: #007a3f; --bg: #f8fafc; --border: #cbd5e1; --text: #1e293b; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    header { background: var(--navy); color: #fff; padding: 2.2rem 1.25rem; }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    h1 { margin: 0 0 0.5rem; font-size: 1.75rem; line-height: 1.25; }
+    header p { margin: 0; color: #cbd5e1; max-width: 820px; }
+    main { padding: 2rem 1.25rem 3.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; margin-bottom: 1.75rem; }
+    .card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04); }
+    .card h2 { margin-top: 0; font-size: 1.18rem; color: var(--navy); }
+    label { display: block; font-size: 0.88rem; font-weight: 600; margin: 0.65rem 0 0.25rem; }
+    input, select { width: 100%; padding: 0.55rem 0.7rem; border: 1px solid #94a3b8; border-radius: 7px; font-size: 0.95rem; }
+    .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
+    .result { margin-top: 1rem; padding: 0.9rem 1rem; border-radius: 8px; background: #f0fdf4; border-left: 4px solid var(--green); font-size: 0.94rem; }
+    .result.warn { background: #fef2f2; border-left-color: #dc2626; }
+    table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 0.9rem; }
+    th, td { border: 1px solid var(--border); padding: 0.55rem 0.7rem; text-align: left; }
+    th { background: #f1f5f9; }
+    .links ul { padding-left: 1.2rem; }
+    .links li { margin-bottom: 0.45rem; }
+    a { color: #0369a1; font-weight: 600; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .btn { display: inline-block; margin-top: 0.75rem; padding: 0.65rem 1.15rem; background: var(--green); color: #fff !important; border-radius: 8px; font-weight: 700; }
+    footer { border-top: 1px solid var(--border); padding: 1.5rem 1.25rem; font-size: 0.86rem; color: #64748b; text-align: center; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>EU PPWR Empty-Space (&le;50%) &amp; Recyclability Mass-Balance Calculator</h1>
+      <p>Open-source structural packaging math utility for Regulation (EU) 2025/40 — check Article 24 e-commerce void ratios, Article 6 Grade A/B/C mono-fibre mass share, and C1S/SBS/greyboard GSM-to-caliper conversions before cutting a 1:1 CAD dieline.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <section class="card" aria-labelledby="void-calc-heading">
+        <h2 id="void-calc-heading">1. Article 24 Empty-Space Ratio (&le;50% Target)</h2>
+        <p style="font-size:0.86rem;color:#475569;margin-top:0">Under PPWR Article 24, air pillows, bubble wrap, shredded paper and EVA foam blocks count as empty space—not product volume.</p>
+        <label>Internal Carton Cavity (L &times; W &times; H mm)</label>
+        <div class="row3">
+          <input id="boxL" type="number" value="205" min="10" oninput="calcVoid()" aria-label="Box Length mm" />
+          <input id="boxW" type="number" value="145" min="10" oninput="calcVoid()" aria-label="Box Width mm" />
+          <input id="boxH" type="number" value="68" min="10" oninput="calcVoid()" aria-label="Box Height mm" />
+        </div>
+        <label>Contained Product Bounding Size (L &times; W &times; H mm)</label>
+        <div class="row3">
+          <input id="prodL" type="number" value="185" min="5" oninput="calcVoid()" aria-label="Product Length mm" />
+          <input id="prodW" type="number" value="125" min="5" oninput="calcVoid()" aria-label="Product Width mm" />
+          <input id="prodH" type="number" value="64" min="5" oninput="calcVoid()" aria-label="Product Height mm" />
+        </div>
+        <div id="voidOut" class="result"></div>
+        <a class="btn" href="https://www.bestpackfactory.com/dielines">Export Matching 1:1 mm Dieline (PDF/DXF/SVG) &rarr;</a>
+      </section>
+
+      <section class="card" aria-labelledby="grade-calc-heading">
+        <h2 id="grade-calc-heading">2. Article 6 Recyclability Grade (A / B / C)</h2>
+        <p style="font-size:0.86rem;color:#475569;margin-top:0">Enter dry component gram weights (0.1 g scale) to check mono-fibre share against 2030/2038 performance bands.</p>
+        <label for="wFibre">Paperboard + Corrugated Cradle Weight (g)</label>
+        <input id="wFibre" type="number" step="0.1" value="24.5" min="0.1" oninput="calcGrade()" />
+        <label for="wCoat">Varnish / Film Lamination + Seam Glue Weight (g)</label>
+        <input id="wCoat" type="number" step="0.1" value="0.6" min="0" oninput="calcGrade()" />
+        <label for="wOther">Non-Separable Plastic Window / Glued Foam / Magnet (g)</label>
+        <input id="wOther" type="number" step="0.1" value="0.0" min="0" oninput="calcGrade()" />
+        <div id="gradeOut" class="result"></div>
+      </section>
+    </div>
+
+    <section class="card">
+      <h2>3. Standard Packaging Paperboard GSM to Caliper (mm &amp; PT) Reference</h2>
+      <table>
+        <thead>
+          <tr><th>Substrate Grade</th><th>Grammage (GSM)</th><th>Typical Caliper (mm)</th><th>US Points (PT)</th><th>Common Structural Use</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Virgin C1S Ivory Board (FBB)</td><td>300 gsm</td><td>0.40 – 0.42 mm</td><td>16 PT</td><td>Cosmetic, skincare &amp; pharma folding cartons</td></tr>
+          <tr><td>Virgin C1S Ivory Board (FBB)</td><td>350 gsm</td><td>0.47 – 0.49 mm</td><td>18–19 PT</td><td>Supplement boxes, retail cartons &amp; PFAS-free food sleeves</td></tr>
+          <tr><td>Virgin C1S Ivory Board (FBB)</td><td>400 gsm</td><td>0.54 – 0.56 mm</td><td>21–22 PT</td><td>Heavy serum bottles &amp; crash-lock auto-bottom boxes</td></tr>
+          <tr><td>High-Density Rigid Greyboard</td><td>1200 gsm</td><td>1.80 – 1.95 mm</td><td>72–76 PT</td><td>Collapsible magnetic gift boxes &amp; drawer boxes</td></tr>
+          <tr><td>High-Density Rigid Greyboard</td><td>1500 gsm</td><td>2.25 – 2.35 mm</td><td>88–92 PT</td><td>Wine, spirits, watch &amp; luxury rigid presentation boxes</td></tr>
+          <tr><td>E-Flute Corrugated Board</td><td>450–520 gsm</td><td>1.50 – 1.80 mm</td><td>60–70 PT</td><td>Right-sized D2C e-commerce mailers &amp; litho-laminated boxes</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card links" style="margin-top:1.25rem">
+      <h2>Technical Documentation, CAD Dielines &amp; Upstream Substrate References</h2>
+      <ul>
+        <li><a href="https://www.bestpackfactory.com/blog/ppwr-article-6-recyclability-grades-empty-space-en-17681-dieline-engineering.html">Engineering Dielines for EU PPWR: Article 6 Grades, 50% Void Formula &amp; EN 17681-1:2025 PFAS Testing</a> — Full analytical breakdown including FTOH/diPAP alkaline hydrolysis and 25 ppb food-contact thresholds.</li>
+        <li><a href="https://www.bestpackfactory.com/dielines">Free 1:1 mm Parametric Packaging Dieline Generator</a> — Instant browser export in vector PDF, DXF, AI and SVG (tuck-end cartons, mailers, magnetic rigid boxes, paper bags &amp; stand-up pouches).</li>
+        <li><a href="https://www.bestpackfactory.com/blog/eu-ppwr-german-verpackg-uk-epr-packaging-data-sheet.html">EU PPWR, German VerpackG (LUCID) &amp; UK EPR Component Weight Data Sheet Template</a></li>
+        <li><a href="https://www.bestpackfactory.com/factory/certificates.html">Factory Compliance &amp; Evidence Register</a> — ISO 9001:2015, ISO 45001:2018 &amp; EU Authorized Representative (EC REP) scope verification.</li>
+        <li><a href="https://www.bestpackfactory.com/products/custom-packaging-boxes.html">Custom Printed C1S &amp; Kraft Folding Cartons (MOQ 500 PCS)</a></li>
+        <li><a href="https://www.bestpackfactory.com/products/luxury-magnetic-boxes.html">Collapsible &amp; Book-Style Magnetic Closure Gift Boxes</a></li>
+        <li><a href="https://www.bestpackfactory.com/products/food-packaging.html">PFAS-Free Aqueous Grease-Barrier Food Packaging Boxes</a></li>
+        <li><a href="https://www.bestpackfactory.com/products/coffee-bags.html">Custom Degassing-Valve Coffee Bags (Digital MOQ 500 &amp; Rotogravure)</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    MIT Open-Source Packaging Engineering Utility &middot; Maintained by <a href="https://www.bestpackfactory.com/">BestPackFactory</a> (Shenzhen Color Printing Paper Packaging Co., Ltd., USCC 91440300MA5DA1RR87).
+  </footer>
+
+  <script>
+    function calcVoid() {
+      var bl = +document.getElementById('boxL').value || 1;
+      var bw = +document.getElementById('boxW').value || 1;
+      var bh = +document.getElementById('boxH').value || 1;
+      var pl = +document.getElementById('prodL').value || 0;
+      var pw = +document.getElementById('prodW').value || 0;
+      var ph = +document.getElementById('prodH').value || 0;
+      var vBox = (bl * bw * bh) / 1000;
+      var vProd = (pl * pw * ph) / 1000;
+      var ratio = Math.max(0, ((vBox - vProd) / vBox) * 100);
+      var el = document.getElementById('voidOut');
+      var pass = ratio <= 50 && vProd <= vBox;
+      el.className = pass ? 'result' : 'result warn';
+      if (vProd > vBox) {
+        el.innerHTML = '<strong>Dimension Conflict:</strong> Product volume (' + vProd.toFixed(0) + ' cm&sup3;) exceeds internal box cavity (' + vBox.toFixed(0) + ' cm&sup3;).';
+      } else {
+        el.innerHTML = '<strong>Internal Volume:</strong> ' + vBox.toFixed(0) + ' cm&sup3; &middot; <strong>Product:</strong> ' + vProd.toFixed(0) + ' cm&sup3;<br/><strong>Empty-Space Ratio: ' + ratio.toFixed(1) + '%</strong> &mdash; ' + (pass ? 'PASSES (&le;50% Article 24 target)' : 'EXCEEDS 50% cap — tighten CAD crease lines or use an integral corrugated cradle.');
+      }
+    }
+    function calcGrade() {
+      var wf = Math.max(0, +document.getElementById('wFibre').value || 0);
+      var wc = Math.max(0, +document.getElementById('wCoat').value || 0);
+      var wo = Math.max(0, +document.getElementById('wOther').value || 0);
+      var total = wf + wc + wo;
+      var el = document.getElementById('gradeOut');
+      if (total <= 0) return;
+      // Thin aqueous varnish + PVA seam glue (<5%) stays compatible with paper repulping; heavy non-separable polymers penalise fibre yield.
+      var nonFibreShare = ((wc + wo) / total) * 100;
+      var recyclableShare = wo === 0 && (wc / total) <= 0.05 ? 100 - (wc / total) * 50 : (wf / total) * 100;
+      var grade = recyclableShare >= 95 ? 'Grade A (&ge;95% — Lowest EPR Fee Tier)' : recyclableShare >= 80 ? 'Grade B (80%–95% — Compliant 2030 &amp; 2038)' : recyclableShare >= 70 ? 'Grade C (70%–80% — Transitional Only, Banned 2038)' : 'Below 70% — Prohibited from Jan 1, 2030';
+      el.className = recyclableShare >= 80 ? 'result' : 'result warn';
+      el.innerHTML = '<strong>Total Unit Mass:</strong> ' + total.toFixed(1) + ' g &middot; <strong>Non-Fibre Share:</strong> ' + nonFibreShare.toFixed(1) + '%<br/><strong>Estimated Stream Score: ' + recyclableShare.toFixed(1) + '%</strong> &rarr; <strong>' + grade + '</strong>';
+    }
+    calcVoid();
+    calcGrade();
+  </script>
+</body>
+</html>
